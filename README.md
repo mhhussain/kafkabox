@@ -34,16 +34,16 @@ docker build .
 Currently, this is setup to do the following.
 
 When the docker image is created:
-# Pull the latest centos image
-# Copy the Kafka binaries (downloaded from Apache Kafka) into the image
-# Unzip the Kafka binaries in the container
-# Copy a shell script to start the Kafka server
+1. Pull the latest centos image
+2. Copy the Kafka binaries (downloaded from Apache Kafka) into the image
+3. Unzip the Kafka binaries in the container
+4. Copy a shell script to start the Kafka server
 
 When the image is run:
 `docker run -t --name container -p 9092:9092 moohh/kafkabox`
-# Run a basic zookeeper instance on port 2181  as a process in the image
-# Run a basic broker instance on port 9092 as a process in the image
-# Create a new topic called 'test-topic'
+1. Run a basic zookeeper instance on port 2181  as a process in the image
+2. Run a basic broker instance on port 9092 as a process in the image
+3. Create a new topic called 'test-topic'
 
 Port 9092 of the image is forwarded to localhost making the Kafka broker available via host port 9092.
 
