@@ -10,4 +10,10 @@ sleep 10s
 
 sleep 10s
 
-bash
+
+cd /root/kafkabox/kafka-api
+npm start &
+
+sleep 10s
+
+cat
