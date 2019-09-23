@@ -43,7 +43,7 @@ When the image is run:
 `docker run -t --name container -p 9092:9092 moohh/kafkabox`
 1. Run a basic zookeeper instance on port 2181  as a process in the image
 2. Run a basic broker instance on port 9092 as a process in the image
-3. Create a new topic called 'test-topic'
+3. Create a new topic called 'sandbox-topic'
 
 Port 9092 of the image is forwarded to localhost making the Kafka broker available via host port 9092.
 
@@ -56,3 +56,9 @@ Get container name:
 `docker ps`
 
 Update hosts file at: `/etc/hosts` and have the container name point to 127.0.0.1
+
+
+### Version
+
+- 1.0.0 - Working version of kafkabox docker image
+- 1.0.1 - Changed test-topic name to sandbox-topic

@@ -6,7 +6,7 @@ sleep 10s
 
 sleep 10s
 
-/root/kafkabox/kafka_2.12-2.3.0/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test-topic
+/root/kafkabox/kafka_2.12-2.3.0/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic sandbox-topic
 
 sleep 10s
 
