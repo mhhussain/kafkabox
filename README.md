@@ -30,9 +30,10 @@ An API is included with the sandbox running on port 3001.
 
 Current list of endpoints:
 
-|End point|Details|
-|---|---|
-|_/topics_|Get list of topics in sandbox|
+|End point|Type|Details|
+|---|---|---|
+|_/topics_|GET|Get list of topics in sandbox|
+|_/getTopics_|POST|Create topic, must include `topicName` in `body` of request|
 
 
 
@@ -84,3 +85,4 @@ Update hosts file at: `/etc/hosts` and have the container name point to 127.0.0.
 - 1.0.0 - Working version of kafkabox docker image
 - 1.0.1 - Changed test-topic name to sandbox-topic
 - 2.0.0 - Added (node) backend api at port 3001
+- 2.1.0 - Added get topics endpoint and some error handling

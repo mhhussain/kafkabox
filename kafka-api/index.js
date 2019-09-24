@@ -9,7 +9,30 @@ app.use(e.json());
 app.get('/topics', (req, res) => {
     let admin = new kafka.Admin(kClient);
     admin.listTopics((err, topics) => {
+        if (err != null) {
+            res.json(err);
+            return;
+        }
         res.json(topics);
+    });
+});
+
+app.post('/createTopic', (req, res) => {
+    let { topicName } = req.body;
+
+    let topics = [{
+        topic: topicName,
+        partitions: 1,
+        replicationFactor: 1
+    }];
+
+    let admin = new kafka.Admin(kClient);
+    admin.createTopics(topics, (err, adResp) => {
+        if (err != null) {
+            res.json(err);
+            return;
+        }
+        res.json(adResp);
     });
 });
 
