@@ -33,7 +33,7 @@ Current list of endpoints:
 |End point|Type|Details|
 |---|---|---|
 |_/topics_|GET|Get list of topics in sandbox|
-|_/getTopics_|POST|Create topic, must include `topicName` in `body` of request|
+|_/createTopics_|POST|Create topic, must include `topicName` in `body` of request|
 
 
 
