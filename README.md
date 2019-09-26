@@ -34,6 +34,7 @@ Current list of endpoints:
 |---|---|---|
 |_/topics_|GET|Get list of topics in sandbox|
 |_/createTopics_|POST|Create topic, must include `topicName` in `body` of request|
+|_/sendMessage_|POST|Puts a message on a topic, must include `message` and `topic` in `body` of request|
 
 
 
@@ -86,3 +87,4 @@ Update hosts file at: `/etc/hosts` and have the container name point to 127.0.0.
 - 1.0.1 - Changed test-topic name to sandbox-topic
 - 2.0.0 - Added (node) backend api at port 3001
 - 2.1.0 - Added get topics endpoint and some error handling
+- 2.2.0 - Added send to topic, also some additional error handling
