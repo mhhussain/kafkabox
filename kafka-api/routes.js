@@ -49,6 +49,32 @@ let setupRoutes = (app) => {
                 res.json(createdResponse);
             });
     });
+
+    // Send { message } from body to :topic
+    app.post('/api/v2/:topic/send', (req, res) => {
+        let topic = req.params.topic;
+        let { message } = req.body;
+
+        if (message == null || topic ==  null) {
+            res.json({error: "no message and/or topic"});
+            return;
+        }
+
+        let kClient = new kafkajs.Kafka(configs.kafkaConfig);
+        let producer = kClient.producer();
+
+        producer.connect()
+            .then(() => {
+                producer.send({
+                    topic: topic,
+                    messages: [{ value: message }],
+                    acks: 1
+                })
+                .then((m) => {
+                    res.json(m);
+                });
+            });
+    });
     
     /// ************************************************************************
     /// Old API - being deprecated
