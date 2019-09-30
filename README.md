@@ -41,7 +41,7 @@ An API is included with the sandbox running on port 3001.
 
 Current list of endpoints:
 
-|End point|Type|Status|Details|
+|End point|Type|Level|Details|
 |---|---|---|---|
 |_/api/v2/topics_|GET|V2|Get list of topics in sandbox|
 |_/api/v2/:topic/create_|POST|V2|Create topic, must include `topicName` in `body` of request|
