@@ -1,5 +1,5 @@
 let kafka = require('kafka-node');
-let n_kafka = require('kafkajs');
+let kafkajs = require('kafkajs');
 
 let { setupTopicConsumer } = require('./kafkaMessageService/topicSocket');
 let configs = require('./configs');
@@ -12,13 +12,42 @@ let setupRoutes = (app) => {
 
     // Get list of topics
     app.get('/api/v2/topics', (req, res) => {
-        let kClient = new n_kafka.Kafka(configs.kafkaConfig);
+        let kClient = new kafkajs.Kafka(configs.kafkaConfig);
         let kAdmin = kClient.admin();
 
         kAdmin.fetchTopicMetadata()
             .then((topics) => { res.json(topics); });
         
         kAdmin.disconnect();
+    });
+
+    // Create new topic with body { topicName }
+    app.post('/api/v2/:topic/create', (req, res) => {
+        let topic = req.params.topic;
+
+        if (!topic) {
+            res.json("no topic specified");
+            return;
+        }
+
+        let topics = {
+            validateOnly: false,
+            waitForLeaders: true,
+            timeout: 30000,
+            topics: [{
+                topic: topic,
+                numPartitions: 1,
+                replicationFactor: 1
+            }]
+        };
+
+
+        let kClient = new kafkajs.Kafka(configs.kafkaConfig);
+        let kAdmin = kClient.admin();
+        kAdmin.createTopics(topics)
+            .then((createdResponse) => {
+                res.json(createdResponse);
+            });
     });
     
     /// ************************************************************************
