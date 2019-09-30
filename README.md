@@ -33,7 +33,7 @@ Once the sandbox is running, you should be able to implement a Kafka publisher a
 - 2.1.0 - Added get topics endpoint and some error handling
 - 2.2.0 - Added a producer to send messages to topics in the sandbox
 - 2.3.0 - Added consumer - get all messages and get message by offset
-- 3.0.0 - Migrated API to kafka-node and also added real-time streaming over socket via feathersjs.
+- 3.0.0 - Migrated API to kafkajs and also added real-time streaming over socket via feathersjs
 
 ## Kafka API
 
