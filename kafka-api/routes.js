@@ -71,15 +71,18 @@ let setupRoutes = (app) => {
                     acks: 1
                 })
                 .then((m) => {
+                    setupTopicConsumer(app, topic);
                     res.json(m);
                 });
             });
     });
     
+    
     /// ************************************************************************
     /// Old API - being deprecated
     /// ************************************************************************
     // Get list of topics
+    /// TODO: deprecate
     app.get('/topics', (req, res) => {
         let aClient = new kafka.KafkaClient({ kafkaHost: configs.KAFKA_HOST });
         let admin = new kafka.Admin(aClient);
@@ -93,6 +96,7 @@ let setupRoutes = (app) => {
     });
 
     // Create new topic with body { topicName }
+    /// TODO: deprecate
     app.post('/:topic/create', (req, res) => {
         let topic = req.params.topic;
 
@@ -120,6 +124,7 @@ let setupRoutes = (app) => {
     });
 
     // Send { message } from body to :topic
+    /// TODO: deprecate
     app.post('/:topic/send', (req, res) => {
         let topic = req.params.topic;
         let { message } = req.body;
@@ -148,6 +153,7 @@ let setupRoutes = (app) => {
     });
 
     // Get all messages from :topic
+    /// TODO: remove this function
     app.get('/:topic', (req, res) => {
         let topic = req.params.topic;
 
@@ -176,7 +182,6 @@ let setupRoutes = (app) => {
         let consumer = new kafka.Consumer(cClient, payload, options);
         consumer.on('message', (message) => {
             messageArray.push(message);
-            app.service('messages').create(message);
 
             if (message.highWaterOffset === message.offset + 1) {
                 res.json(messageArray);
@@ -191,6 +196,7 @@ let setupRoutes = (app) => {
     });
 
     // Get the message at :offset from :topic
+    /// TODO: remove this function
     app.get('/:topic/:offset', (req, res) => {
         let topic = req.params.topic;
         let offset = req.params.offset;

@@ -1,31 +1,31 @@
-let kafka = require('kafka-node');
+let kafkajs = require('kafkajs');
 
 let configs = require('../configs');
 
-let setupTopicConsumer = (app, topic) => {
+let setupTopicConsumer = async (app, topic) => {
+    let groupId = `${topic}-socket-group`;
     
-    let kClient = new kafka.KafkaClient({ kafkaHost: configs.KAFKA_HOST });
-    let payload = [
-        {
-            topic: topic,
-            offset: 0,
-            partition: 0
+    let kClient = new kafkajs.Kafka(configs.kafkaConfig);
+
+    // Reset offsets
+    let kAdmin = kClient.admin();
+    await kAdmin.resetOffsets({ groupId, topic });
+
+    let consumer = kClient.consumer({ groupId });
+
+    await consumer.connect()
+    await consumer.subscribe({ topic: topic, fromBeginning: true });
+    
+    await consumer.run({
+        eachMessage: ({topic, partition, message }) => {
+            let m = {
+                topic,
+                partition,
+                offset: message.offset,
+                value: message.value.toString()
+            }
+            app.service('messages').create(m);
         }
-    ];
-    var options = {
-        autoCommit: false,
-        fetchMaxWaitMs: 3000,
-        fetchMaxBytes: 1024 * 1024,
-        fromOffset: true
-    };
-
-    let consumer = new kafka.Consumer(kClient, payload, options);
-    consumer.on('message', (message) => {
-        app.service('messages').create(message);
-    });
-
-    consumer.on('error', (err) => {
-        consumer.close();
     });
 };
 
