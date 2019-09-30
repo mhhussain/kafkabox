@@ -10,6 +10,9 @@ This codebase is mainly a Docker image which, when run, will give you a very qui
 _Update 2.0.0_
 Added a backend API (currently in node) at port 3001. Export port 3001 when creating the docker container for access.
 
+_Update 3.0.0_
+Moved the entire API from using `kafka-node` to `kafkajs`. New routes are at `/api/v2`. Websockets are now also available, see `index.html` for an example.
+
 ## Running the sandbox
 
 The main image can be found here: https://hub.docker.com/r/moohh/kafkabox
@@ -30,6 +33,7 @@ Once the sandbox is running, you should be able to implement a Kafka publisher a
 - 2.1.0 - Added get topics endpoint and some error handling
 - 2.2.0 - Added a producer to send messages to topics in the sandbox
 - 2.3.0 - Added consumer - get all messages and get message by offset
+- 3.0.0 - Migrated API to kafka-node and also added real-time streaming over socket via feathersjs.
 
 ## Kafka API
 
@@ -37,13 +41,31 @@ An API is included with the sandbox running on port 3001.
 
 Current list of endpoints:
 
-|End point|Type|Details|
-|---|---|---|
-|_/topics_|GET|Get list of topics in sandbox|
-|_/:topic/create_|POST|Create topic, must include `topicName` in `body` of request|
-|_/:topic/send_|POST|Adds a message to a topic, must include `message` and `topic` in `body` of request|
-|_/:topic_|GET|Gets all messages from `:topic`|
-|_/:topic/:offset_|GET|Gets message from `:topic` with offset `:offset`|
+|End point|Type|Status|Details|
+|---|---|---|---|
+|_/api/v2/topics_|GET|V2|Get list of topics in sandbox|
+|_/api/v2/:topic/create_|POST|V2|Create topic, must include `topicName` in `body` of request|
+|_/api/v2/:topic/send_|POST|V2|Adds a message to a topic, must include `message` and `topic` in `body` of request|
+|_/messages_|GET|V1|Get all messages in sandbox. This is using feathersjs, see below for details|
+|_/topics_|GET|DEP|Get list of topics in sandbox|
+|_/:topic/create_|POST|DEP|Create topic, must include `topicName` in `body` of request|
+|_/:topic/send_|POST|DEP|Adds a message to a topic, must include `message` and `topic` in `body` of request|
+|_/:topic_|GET|DEP|Gets all messages from `:topic`|
+|_/:topic/:offset_|GET|DEP|Gets message from `:topic` with offset `:offset`|
+
+All endpoints listed as DEP are endpoints written in the `kafka-node` library. V2 endpoints are using `kafkajs`.
+
+## Feathers JS
+
+Visit `localhost:3001` for a sample of realtime behavior.
+
+Featherjs is being used to stream and save data in the API for websocket connections. Socket is available at `localhost:3001`, front-end socket can be implemented by called `app.service('message').on('created', cbFunction)`. See `index.html` for an example of how this works.
+
+The application is setup to automatically consume from `sandbox-topic`. Any new topic **that gets created via the API** will also automatically have their messages consumed into feathers' message endpoint. Consumer group id is `${topicName}-socket-group` (i.e. `sandbox-topic-group`).
+
+The endpoint `/messages` returns an array with all messages in the sandbox.
+
+_Future - add functionality to manually add topics to feathers consumption._
 
 ## Building from source
 
