@@ -5,7 +5,12 @@ class Topics extends Component {
     render() {
         return (
             this.props.topics.map((topic) => (
-                <div>{topic.topicName}</div>
+                <div>
+                    <div>{topic.topic}</div>
+                    <ul>
+                        <li>{topic}</li>
+                    </ul>
+                </div>
             ))
         )
     }
