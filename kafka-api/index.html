@@ -19,6 +19,7 @@
 
   <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
   <script type="text/javascript">
     // Set up socket.io
     const socket = io('http://localhost:3001');
@@ -33,9 +34,7 @@
       const messageInput = document.getElementById('message-text');
 
       // Create a new message with the input field value
-      await app.service('messages').create({
-        text: messageInput.value
-      });
+      await axios.post('http://localhost:3001/sandbox-topic/send', { message: messageInput.value })
 
       messageInput.value = '';
     }
