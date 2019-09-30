@@ -1,10 +1,29 @@
 let kafka = require('kafka-node');
+let n_kafka = require('kafkajs');
 
 let { setupTopicConsumer } = require('./kafkaMessageService/topicSocket');
 let configs = require('./configs');
 
 let setupRoutes = (app) => {
+
+    /// ************************************************************************
+    /// API V2
+    /// ************************************************************************
+
+    // Get list of topics
+    app.get('/api/v2/topics', (req, res) => {
+        let kClient = new n_kafka.Kafka(configs.kafkaConfig);
+        let kAdmin = kClient.admin();
+
+        kAdmin.fetchTopicMetadata()
+            .then((topics) => { res.json(topics); });
+        
+        kAdmin.disconnect();
+    });
     
+    /// ************************************************************************
+    /// Old API - being deprecated
+    /// ************************************************************************
     // Get list of topics
     app.get('/topics', (req, res) => {
         let aClient = new kafka.KafkaClient({ kafkaHost: configs.KAFKA_HOST });
