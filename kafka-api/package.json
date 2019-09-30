@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@feathersjs/express": "^4.3.3",
+    "@feathersjs/feathers": "^4.3.3",
+    "@feathersjs/socketio": "^4.3.3",
     "express": "^4.17.1",
     "kafka-node": "^4.1.3"
   }

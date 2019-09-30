@@ -50,14 +50,35 @@ app.on('connection', connection =>
 
 app.publish(data => app.channel('everybody'));
 
-// For good measure let's create a message
-// So our API doesn't look so empty
-app.service('messages').create({
-  text: 'Hello world from the server'
+/// **********************************************************************
+/// Kafka Consumers
+/// **********************************************************************
+let sanboxTopicClient = new kafka.KafkaClient({ kafkaHost: KAFKA_HOST });
+let payload = [
+    {
+        topic: 'sandbox-topic',
+        offset: 0,
+        partition: 0
+    }
+];
+var options = {
+    autoCommit: false,
+    fetchMaxWaitMs: 3000,
+    fetchMaxBytes: 1024 * 1024,
+    fromOffset: true
+};
+
+let consumer = new kafka.Consumer(sanboxTopicClient, payload, options);
+consumer.on('message', (message) => {
+    app.service('messages').create(message);
+});
+
+consumer.on('error', (err) => {
+    consumer.close();
 });
 
 /// **********************************************************************
-/// Kafka Access
+/// Routes
 /// **********************************************************************
 // Get list of topics
 app.get('/topics', (req, res) => {
