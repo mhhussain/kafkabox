@@ -1,5 +1,5 @@
 let configs = {
-    port: 3002,
+    port: 3001,
     KAFKA_HOST: '127.0.0.1:9092'
 };
 
