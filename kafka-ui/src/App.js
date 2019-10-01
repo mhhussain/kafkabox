@@ -5,12 +5,12 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import _ from 'lodash';
 
+import './components/styles.css';
+
 import Topic from './components/Topic';
-import KafkaMessage from './components/KafkaMessage';
 
 class App extends Component {
     state = {
-        topics: [],
         messages: []
     }
 
@@ -33,12 +33,6 @@ class App extends Component {
         // Add message to state
         let joined = this.state.messages.concat(message);
         this.setState({ messages: joined });
-
-        _.forEach(_.groupBy(this.state.messages, (m) => { return m.topic; }), (messages) => {
-            _.map(messages, (m) => {
-                console.log(m);
-            })
-        })
     }
 
     getTopicArray = () => {
@@ -57,20 +51,36 @@ class App extends Component {
             <Router>
                 <div className='App'>
                     <Route path='/' render={(props) => (
-                            _.map(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
-                                return {
-                                    topicName: key,
-                                    messages: val
-                                }
-                            }), (t) => (
-                                <Topic topicName={t.topicName} messages={t.messages} />
-                            ))
+                        <main>
+                            <div className="table-container">
+                            <div className="uk-overflow-auto">
+                                <table className="uk-table uk-table-hover uk-table-middle uk-table-divider">
+                                <thead>
+                                    <tr>
+                                        <th className="uk-table-shrink">Topic Name</th>
+                                        <th className="uk-table-shrink">Messages</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {_.map(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
+                                        return {
+                                            topicName: key,
+                                            messages: val
+                                        }
+                                    }), (t) => (
+                                        <Topic topicName={t.topicName} messages={t.messages} />
+                                    ))}
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </main>
                         )}
                     />
                 </div>
             </Router>
         )
     }
-}
+};
 
 export default App;
