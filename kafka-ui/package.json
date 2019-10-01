@@ -11,6 +11,7 @@
   "dependencies": {
     "@feathersjs/client": "^4.3.3",
     "axios": "^0.19.0",
+    "lodash": "^4.17.15",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-router-dom": "^5.1.1",
