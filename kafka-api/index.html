@@ -9,7 +9,13 @@
 <body>
   <main id="main" class="container">
     <h1>Welcome to Feathers</h1>
+
+    <form class="form" onsubmit="subTopic(event.preventDefault())">
+        <input type="text" id="topic-sub-text" placeholder="Enter topic name here">
+        <button type="submit" class="button button-primary">Subscribe to topic</button>
+    </form>
     <form class="form" onsubmit="sendMessage(event.preventDefault())">
+      <input type="text" id="topic-text" placeholder="Enter topic name here">
       <input type="text" id="message-text" placeholder="Enter message here">
       <button type="submit" class="button button-primary">Send message</button>
     </form>
@@ -21,21 +27,33 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
   <script type="text/javascript">
+    const port = 3001;
     // Set up socket.io
-    const socket = io('http://localhost:3001');
+    const socket = io(`http://localhost:${port}`);
     // Initialize a Feathers app
     const app = feathers();
     
     // Register socket.io to talk to our server
     app.configure(feathers.socketio(socket));
 
+    async function subTopic () {
+      const topicInput = document.getElementById('topic-sub-text');
+
+      // Create a new message with the input field value
+      await axios.post(`http://localhost:${port}/api/v2/${topicInput.value}/feathers`)
+
+      topicInput.value = '';
+    }
+
     // Form submission handler that sends a new message
     async function sendMessage () {
+      const topicInput = document.getElementById('topic-text');
       const messageInput = document.getElementById('message-text');
 
       // Create a new message with the input field value
-      await axios.post('http://localhost:3001/sandbox-topic/send', { message: messageInput.value })
+      await axios.post(`http://localhost:${port}/api/v2/${topicInput.value}/send`, { message: messageInput.value })
 
+      topicInput.value = '';
       messageInput.value = '';
     }
 

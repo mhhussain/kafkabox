@@ -1,19 +1,20 @@
 let kafkajs = require('kafkajs');
+let _ = require('lodash');
 
 let configs = require('../configs');
 
+let groups = [];
+
 let setupTopicConsumer = async (app, topic) => {
     let groupId = `${topic}-socket-group`;
-    
+
     let kClient = new kafkajs.Kafka(configs.kafkaConfig);
-
-    // Reset offsets
-    let kAdmin = kClient.admin();
-    await kAdmin.resetOffsets({ groupId, topic });
-
     let consumer = kClient.consumer({ groupId });
 
-    await consumer.connect()
+    // Delete existing messages in feathers
+    app.service('messages').deleteTopicData(topic);
+
+    await consumer.connect();
     await consumer.subscribe({ topic: topic, fromBeginning: true });
     
     await consumer.run({
@@ -27,6 +28,12 @@ let setupTopicConsumer = async (app, topic) => {
             app.service('messages').create(m);
         }
     });
+
+    await consumer.seek({ topic: topic, partition: 0, offset: 0 });
+
+    if (_.includes(groups, groupId)) {
+        groups.push(groupId);
+    }
 };
 
 module.exports = {

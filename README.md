@@ -34,6 +34,7 @@ Once the sandbox is running, you should be able to implement a Kafka publisher a
 - 2.2.0 - Added a producer to send messages to topics in the sandbox
 - 2.3.0 - Added consumer - get all messages and get message by offset
 - 3.0.0 - Migrated API to kafkajs and also added real-time streaming over socket via feathersjs
+- 3.1.0 - Added a way to create a consumer on any topic
 
 ## Kafka API
 
@@ -46,6 +47,7 @@ Current list of endpoints:
 |_/api/v2/topics_|GET|V2|Get list of topics in sandbox|
 |_/api/v2/:topic/create_|POST|V2|Create topic, must include `topicName` in `body` of request|
 |_/api/v2/:topic/send_|POST|V2|Adds a message to a topic, must include `message` and `topic` in `body` of request|
+|_/api/v2/:topic/feathers_|POST|V2|Starts a consumer to the messages feathers service, messages for the topic are avaible at feather socket. See below for details|
 |_/messages_|GET|V1|Get all messages in sandbox. This is using feathersjs, see below for details|
 |_/topics_|GET|DEP|Get list of topics in sandbox|
 |_/:topic/create_|POST|DEP|Create topic, must include `topicName` in `body` of request|

@@ -71,10 +71,24 @@ let setupRoutes = (app) => {
                     acks: 1
                 })
                 .then((m) => {
-                    setupTopicConsumer(app, topic);
+                    // setupTopicConsumer(app, topic);
                     res.json(m);
                 });
             });
+    });
+
+    // Start topic socket
+    app.post('/api/v2/:topic/feathers', (req, res) => {
+        let topic = req.params.topic;
+
+        if (!topic) {
+            res.json("no topic specified");
+            return;
+        }
+
+        setupTopicConsumer(app, topic);
+
+        res.json(true);
     });
     
     

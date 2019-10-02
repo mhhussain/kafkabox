@@ -25,9 +25,6 @@ app.on('connection', connection => {
 
 app.publish(data => app.channel('everybody'));
 
-// Setup sandbox-topic consumer
-setupTopicConsumer(app, 'sandbox-topic');
-
 // Setup all routes
 setupRoutes(app);
 
