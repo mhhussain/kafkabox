@@ -63,11 +63,9 @@ Visit `localhost:3001` for a sample of realtime behavior.
 
 Featherjs is being used to stream and save data in the API for websocket connections. Socket is available at `localhost:3001`, front-end socket can be implemented by called `app.service('message').on('created', cbFunction)`. See `index.html` for an example of how this works.
 
-The application is setup to automatically consume from `sandbox-topic`. Any new topic **that gets created via the API** will also automatically have their messages consumed into feathers' message endpoint. Consumer group id is `${topicName}-socket-group` (i.e. `sandbox-topic-group`).
+The application does not automatically consume from any topics. To start a realtime stream from a topic, use the `/api/v2/:topic/feathers` endpoint mentioned above. Consumer group id is `${topicName}-socket-group` (i.e. `sandbox-topic-group`).
 
 The endpoint `/messages` returns an array with all messages in the sandbox.
-
-_Future - add functionality to manually add topics to feathers consumption._
 
 ## Building from source
 
