@@ -16,3 +16,8 @@ tr.expandable > td > .inner {
   margin: 15px;
   overflow: hidden;
 }
+
+.message {
+  height: 100px;
+  width: 25px;
+}

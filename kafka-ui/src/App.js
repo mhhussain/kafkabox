@@ -46,31 +46,19 @@ class App extends Component {
             <Router>
                 <div className='App'>
                     <Route path='/' render={(props) => (
-                        <main className="uk-flex">
+                        <main className="uk-flex uk-flex-auto">
                             <TopicList  topics={_.uniq(_.map(this.state.messages, (t) => { return t.topic }), (t) => { return t.topic })}
                                         selectTopic={this.onTopicSelect}
                                 />
-                            <div className="uk-width-3-4 table-container">
-                            <div className="uk-overflow-auto">
-                                <table className="uk-table uk-table-hover uk-table-middle uk-table-divider">
-                                <thead>
-                                    <tr>
-                                        <th className="uk-table-shrink">Topic Name</th>
-                                        <th className="uk-table-shrink">Messages</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {_.map(_.filter(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
-                                        return {
-                                            topicName: key,
-                                            messages: val
-                                        }
-                                    }), (t) => { return t.topicName === this.state.selectedTopic }), (t) => (
-                                        <Topic topicName={t.topicName} messages={t.messages} />
-                                    ))}
-                                </tbody>
-                                </table>
-                            </div>
+                            <div className="uk-width-3-4 uk-flex-column">
+                                {_.map(_.filter(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
+                                    return {
+                                        topicName: key,
+                                        messages: val
+                                    }
+                                }), (t) => { return t.topicName === this.state.selectedTopic }), (t) => (
+                                    <Topic topicName={t.topicName} messages={t.messages} />
+                                ))}
                             </div>
                         </main>
                         )}

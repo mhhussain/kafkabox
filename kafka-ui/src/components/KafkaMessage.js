@@ -5,13 +5,9 @@ import './styles.css';
 
 class KafkaMessage extends Component {
     
-
     render() {
         return (
-            <tr ref="expanderBody" className="inner uk-grid">
-                <td>{this.props.message.offset}</td>
-                <td>{this.props.message.value}</td>
-            </tr>
+            <div className="message uk-text-center uk-button-default" uk-tooltip={`"${this.props.message.value}"`}>{this.props.message.offset}</div>
         )
     }
 };

@@ -9,29 +9,23 @@ import KafkaMessage from './KafkaMessage';
 class Topic extends Component {
     state = { expanded: false }
 
-    toggleExpander = () => {
-        if (!this.state.expanded) {
-            this.setState({ expanded: true });
-        } else {
-            this.setState({ expanded: false });
-        }
-    }
-
     render() {
         return [
-            <tr key="main" onClick={this.toggleExpander}>
-                <td>{this.props.topicName}</td>
-                <td>{this.props.messages.length}</td>
-            </tr>,
-            this.state.expanded && (
-                <tr className="expandable" key="tr-expander">
-                    <td className="uk-background-muted" colSpan={2}>
-                        {_.map(this.props.messages, (m) => (
-                            <KafkaMessage key={m.offset} message={m} />
-                        ))}
-                    </td>
-                </tr>
-            )
+            <div className="uk-flex uk-flex-row">
+                <div className="uk-width-3-4">
+                    <div className="uk-text-small uk-text-muted">Topic Name</div>
+                    <div className="uk-text-capitalize">{this.props.topicName}</div>
+                </div>
+                <div className="uk-width-1-4">
+                    <div className="uk-text-small uk-text-muted">Message Count</div>
+                    <div>{this.props.messages.length}</div>
+                </div>
+            </div>,
+            <div className="uk-flex uk-flex-center">
+                {_.map(this.props.messages, (m) => (
+                    <KafkaMessage key={m.offset} message={m} />
+                ))}
+            </div>
         ]
     }
 };
