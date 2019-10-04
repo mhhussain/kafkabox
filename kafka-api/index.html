@@ -24,7 +24,11 @@
       <button type="submit" class="button button-primary">Send message</button>
     </form>
 
+    <h2>Here are the current topics:</h2>
+    <div id="topics"></div>
+
     <h2>Here are the current messages:</h2>
+    <div id="messages"></div>
   </main>
 
   <script src="//unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
@@ -72,12 +76,25 @@
       messageInput.value = '';
     }
 
+    async function getTopics () {
+      let res = await axios.get(`http://localhost:${port}/api/v2/topics`);
+
+      let { topics } = res.data;
+
+      for (var i = 0; i < topics.length; i++) {
+        document.getElementById('topics').innerHTML += `<div>${topics[i].name}</div>`;
+      }
+    }
+
     // Renders a single message on the page
     function addMessage (message) {
-      document.getElementById('main').innerHTML += `<ul><li>${message.topic}</li><li>${message.offset}</li><li>${message.value}</li></ul>`;
+      document.getElementById('messages').innerHTML += `<ul><li>${message.topic}</li><li>${message.offset}</li><li>${message.value}</li></ul>`;
     }
     
     const main = async () => {
+      // Get all topics
+      getTopics()
+
       // Find all existing messages
       const messages = await app.service('messages').find();
 
