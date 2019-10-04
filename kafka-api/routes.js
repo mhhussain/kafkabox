@@ -86,6 +86,11 @@ let setupRoutes = (app) => {
             return;
         }
 
+        if (topic === '__consumer_offsets') {
+            res.json("cannot subscribe");
+            return;
+        }
+
         setupTopicConsumer(app, topic);
 
         res.json(true);
