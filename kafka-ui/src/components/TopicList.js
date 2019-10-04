@@ -7,9 +7,13 @@ class TopicList extends Component {
     render() {
         return (
             <div className="uk-card uk-card-body">
-                <div className="uk-flex-center uk-width-1-1">Topic List</div>
+                <div className="uk-card uk-text-center uk-text-emphasis">
+                    Topic List
+                </div>
                 {_.map(this.props.topics, (t) =>(
-                    <button key={t} onClick={() => { this.props.selectTopic(t) }} className="uk-button uk-button-default uk-width-1-1">{t}</button>
+                    <div className="uk-background-muted">
+                        <button key={t} onClick={() => { this.props.selectTopic(t) }} className="uk-button uk-button-default uk-width-1-1">{t}</button>
+                    </div>
                 ))}
             </div>
         )

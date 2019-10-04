@@ -44,16 +44,18 @@ class App extends Component {
             <Router>
                 <Route path='/' render={(props) => (
                     <div className="uk-flex-column" uk-grid>
-                        <div className="uk-width-1-1 uk-background-primary">
-
+                        <div className="uk-width-1-1 uk-background-primary uk-text-lead">
+                            <div className="uk-card uk-card-body">
+                                Kafkabox
+                            </div>
                         </div>
-                        <div className="uk-flex">
-                            <div className="uk-width-1-4">
+                        <div className="uk-flex uk-height-1-1">
+                            <div className="uk-width-1-4 uk-nav uk-background-primary">
                                 <TopicList  topics={_.uniq(_.map(this.state.messages, (t) => { return t.topic }), (t) => { return t.topic })}
                                             selectTopic={this.onTopicSelect}
                                     />
                             </div>
-                            <div className="uk-width-3-4">
+                            <div className="uk-width-3-4 uk-background-muted">
                                 {_.map(_.filter(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
                                     return {
                                         topicName: key,
