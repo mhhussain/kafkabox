@@ -10,23 +10,25 @@ class Topic extends Component {
     state = { expanded: false }
 
     render() {
-        return [
-            <div className="uk-flex uk-flex-row">
-                <div className="uk-width-3-4">
-                    <div className="uk-text-small uk-text-muted">Topic Name</div>
-                    <div className="uk-text-capitalize">{this.props.topicName}</div>
+        return (
+            <div className="uk-card uk-card-body">
+                <div className="uk-flex">
+                    <div className="uk-width-1-4">
+                        <div className="uk-text-small uk-text-muted">Topic Name</div>
+                        <div className="uk-text-capitalize">{this.props.topicName}</div>
+                    </div>
+                    <div className="uk-width-3-4">
+                        <div className="uk-text-small uk-text-muted uk-text-right">Message Count</div>
+                        <div className="uk-text-right">{this.props.messages.length}</div>
+                    </div>
                 </div>
-                <div className="uk-width-1-4">
-                    <div className="uk-text-small uk-text-muted">Message Count</div>
-                    <div>{this.props.messages.length}</div>
+                <div className="uk-flex uk-flex-center">
+                    {_.map(this.props.messages, (m) => (
+                        <KafkaMessage key={m.offset} message={m} />
+                    ))}
                 </div>
-            </div>,
-            <div className="uk-flex uk-flex-center">
-                {_.map(this.props.messages, (m) => (
-                    <KafkaMessage key={m.offset} message={m} />
-                ))}
             </div>
-        ]
+        )
     }
 };
 

@@ -5,8 +5,6 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import _ from 'lodash';
 
-import './components/styles.css';
-
 import TopicList from './components/TopicList';
 import Topic from './components/Topic';
 
@@ -44,13 +42,18 @@ class App extends Component {
     render() {
         return(
             <Router>
-                <div className='App'>
-                    <Route path='/' render={(props) => (
-                        <main className="uk-flex uk-flex-auto">
-                            <TopicList  topics={_.uniq(_.map(this.state.messages, (t) => { return t.topic }), (t) => { return t.topic })}
-                                        selectTopic={this.onTopicSelect}
-                                />
-                            <div className="uk-width-3-4 uk-flex-column">
+                <Route path='/' render={(props) => (
+                    <div className="uk-flex-column" uk-grid>
+                        <div className="uk-width-1-1 uk-background-primary">
+
+                        </div>
+                        <div className="uk-flex">
+                            <div className="uk-width-1-4">
+                                <TopicList  topics={_.uniq(_.map(this.state.messages, (t) => { return t.topic }), (t) => { return t.topic })}
+                                            selectTopic={this.onTopicSelect}
+                                    />
+                            </div>
+                            <div className="uk-width-3-4">
                                 {_.map(_.filter(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
                                     return {
                                         topicName: key,
@@ -60,10 +63,10 @@ class App extends Component {
                                     <Topic topicName={t.topicName} messages={t.messages} />
                                 ))}
                             </div>
-                        </main>
-                        )}
-                    />
-                </div>
+                        </div>
+                    </div>
+                )}
+                />
             </Router>
         )
     }
