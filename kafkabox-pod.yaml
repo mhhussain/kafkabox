@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafkabox
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3001
+    targetPort: 3001
+    nodePort: 31013
+  - name: kafka
+    port: 9092
+    targetPort: 9092
+  selector:
+    app: kafkabox
+---
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: kafkabox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafkabox
+  template:
+    metadata:
+      labels:
+        app: kafkabox
+        env: moo
+    spec:
+      containers:
+      - image: moohh/kafkabox:3.1.0
+        name: kafkabox
+        ports:
+        - containerPort: 3001
+          protocol: TCP
+        - containerPort: 9092
+          protocol: TCP
