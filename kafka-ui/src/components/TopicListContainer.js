@@ -11,9 +11,6 @@ import CachedIcon from '@material-ui/icons/Cached';
 import styles from './styles';
 
 class TopicListContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -36,7 +33,7 @@ class TopicListContainer extends Component {
                 <List>
                 {this.props.topics.map((t, index) => (
                     <ListItem button key={t.topic} onClick={() => { this.props.onTopicChange(t.topic) }}>
-                        <ListItemIcon>{t.topic === this.props.selectedTopic ? <CachedIcon /> : null}</ListItemIcon>
+                        <ListItemIcon>{t.topic === this.props.selectedTopic ? <CachedIcon /> : <div />}</ListItemIcon>
                         <ListItemText primary={t.topic} />
                     </ListItem>
                 ))}

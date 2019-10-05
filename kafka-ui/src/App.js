@@ -36,7 +36,7 @@ class App extends Component {
         <CssBaseline />
         <AppBar position="fixed" style={{width: "calc(100% - 240px)"}}>
             <Toolbar>
-                <Typography variant="title" color="inherit">
+                <Typography variant="subtitle1" color="inherit">
                     Kafkabox
                 </Typography>
             </Toolbar>
