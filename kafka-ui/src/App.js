@@ -25,6 +25,14 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({ topics: [{ topic: "sandbox-topic" }, { topic: "test-topic-2" }, { topic: "test-topic-1" }] });
+    this.setState({ messages: [
+      { topic: "sandbox-topic", partition: 0, offset: 0, value: "world1" },
+      { topic: "sandbox-topic", partition: 0, offset: 1, value: "world2" },
+      { topic: "test-topic-1", partition: 0, offset: 0, value: "world1" },
+      { topic: "test-topic-1", partition: 0, offset: 1, value: "world2" },
+      { topic: "test-topic-1", partition: 0, offset: 2, value: "world3" },
+      { topic: "test-topic-2", partition: 0, offset: 0, value: "world1" },
+    ] });
   }
 
   onSelectedTopicChange(topic) {
@@ -47,7 +55,7 @@ class App extends Component {
           onTopicChange={this.onSelectedTopicChange}
           />
 
-        <TopicContainer />
+        <TopicContainer topicName={this.state.selectedTopic} messages={this.state.messages} />
       </div>
     );
   }
