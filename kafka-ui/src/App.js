@@ -1,77 +1,80 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import feathers from '@feathersjs/client'
-import io from 'socket.io-client';
-import axios from 'axios';
-import _ from 'lodash';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-import TopicList from './components/TopicList';
-import Topic from './components/Topic';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+import TopicListContainer from './components/TopicListContainer';
+
+import './App.css';
 
 class App extends Component {
-    state = {
-        selectedTopic: '',
-        messages: []
-    }
+  state = {
+    selectedTopic: '',
+    topics: [],
+    messages: []
+  }
 
-    componentDidMount() {
-        // Setup socket
-        let socket = io('http://localhost:3001');
-        let app = feathers();
+  constructor(props) {
+    super(props);
 
-        app.configure(feathers.socketio(socket));
+    this.onSelectedTopicChange = this.onSelectedTopicChange.bind(this);
+  }
 
-        app.service('messages').find()
-            .then((messages) => {
-                messages.forEach(this.addMessage);
-            });
+  componentDidMount() {
+    this.setState({ topics: [{ topic: "sandbox-topic" }, { topic: "test-topic-2" }, { topic: "test-topic-1" }] });
+  }
 
-        app.service('messages').on('created', this.addMessage);
-    }
+  onSelectedTopicChange(topic) {
+    this.setState({ selectedTopic: topic });
+  }
 
-    addMessage = (message) => {
-        // Add message to state
-        let joined = this.state.messages.concat(message);
-        this.setState({ messages: joined });
-    }
+  render() {
+    return (
+      <div style={{display: "flex"}}>
+        <CssBaseline />
+        <AppBar position="fixed" style={{width: "calc(100% - 240px)"}}>
+            <Toolbar>
+                <Typography variant="title" color="inherit">
+                    Kafkabox
+                </Typography>
+            </Toolbar>
+        </AppBar>
+        <TopicListContainer selectedTopic={this.state.selectedTopic}
+          topics={this.state.topics}
+          onTopicChange={this.onSelectedTopicChange}
+          />
 
-    onTopicSelect = (topic) => {
-        this.setState({ selectedTopic: topic });
-    }
-
-    render() {
-        return(
-            <Router>
-                <Route path='/' render={(props) => (
-                    <div className="uk-flex-column" uk-grid>
-                        <div className="uk-width-1-1 uk-background-primary uk-text-lead">
-                            <div className="uk-card uk-card-body">
-                                Kafkabox
-                            </div>
-                        </div>
-                        <div className="uk-flex uk-height-1-1">
-                            <div className="uk-width-1-4 uk-nav uk-background-primary">
-                                <TopicList  topics={_.uniq(_.map(this.state.messages, (t) => { return t.topic }), (t) => { return t.topic })}
-                                            selectTopic={this.onTopicSelect}
-                                    />
-                            </div>
-                            <div className="uk-width-3-4 uk-background-muted">
-                                {_.map(_.filter(_.map(_.groupBy(this.state.messages, (m) => { return m.topic }), (val, key, col) => {
-                                    return {
-                                        topicName: key,
-                                        messages: val
-                                    }
-                                }), (t) => { return t.topicName === this.state.selectedTopic }), (t) => (
-                                    <Topic topicName={t.topicName} messages={t.messages} />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                )}
-                />
-            </Router>
-        )
-    }
-};
+        <main>
+              <div></div>
+              <Typography paragraph>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
+                facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
+                gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
+                donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
+                Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
+                imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
+                arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
+                donec massa sapien faucibus et molestie ac.
+              </Typography>
+              <Typography paragraph>
+                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
+                facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
+                tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
+                consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
+                vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
+                hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
+                tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
+                nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
+                accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
+              </Typography>
+          </main>
+      </div>
+    );
+  }
+}
 
 export default App;
