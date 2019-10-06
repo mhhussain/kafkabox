@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import feathers from '@feathersjs/client';
+import io from 'socket.io-client';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -24,6 +27,19 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // Configure feathers
+    let socket = io('http://localhost:3001');
+    let app = feathers();
+
+    app.configure(feathers.socketio(socket));
+
+    app.service('messages').find()
+        .then((messages) => {
+            messages.forEach(this.addMessage);
+        });
+
+    app.service('messages').on('created', this.addMessage);
+
     this.setState({ topics: [{ topic: "sandbox-topic" }, { topic: "test-topic-2" }, { topic: "test-topic-1" }] });
     this.setState({ messages: [
       { topic: "sandbox-topic", partition: 0, offset: 0, value: "world1" },
@@ -34,6 +50,34 @@ class App extends Component {
       { topic: "test-topic-2", partition: 0, offset: 0, value: "world1" },
     ] });
   }
+
+  addMessage = (message) => {
+    // Add message to state
+    let joined = this.state.messages.concat(message);
+    this.setState({ messages: joined });
+  }
+  /*
+
+  // Setup socket
+        let socket = io('http://localhost:3001');
+        let app = feathers();
+
+        app.configure(feathers.socketio(socket));
+
+        app.service('messages').find()
+            .then((messages) => {
+                messages.forEach(this.addMessage);
+            });
+
+        app.service('messages').on('created', this.addMessage);
+    }
+
+    addMessage = (message) => {
+        // Add message to state
+        let joined = this.state.messages.concat(message);
+        this.setState({ messages: joined });
+    }
+  */
 
   onSelectedTopicChange(topic) {
     this.setState({ selectedTopic: topic });
