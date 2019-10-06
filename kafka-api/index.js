@@ -1,6 +1,7 @@
 let e = require('@feathersjs/express');
 let feathers = require('@feathersjs/feathers');
 let socketio = require('@feathersjs/socketio');
+let cors = require('cors');
 
 let { setupTopicConsumer } = require('./kafkaMessageService/topicSocket');
 let { setupRoutes } = require('./routes');
@@ -10,6 +11,7 @@ let configs = require('./configs');
 let app = e(feathers());
 
 app.use(e.json());
+app.use(cors());
 app.use(e.urlencoded({ extended: true }));
 app.use(e.static(__dirname));
 
