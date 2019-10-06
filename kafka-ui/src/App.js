@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import feathers from '@feathersjs/client';
 import io from 'socket.io-client';
+import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -40,15 +41,13 @@ class App extends Component {
 
     app.service('messages').on('created', this.addMessage);
 
-    this.setState({ topics: [{ topic: "sandbox-topic" }, { topic: "test-topic-2" }, { topic: "test-topic-1" }] });
-    this.setState({ messages: [
-      { topic: "sandbox-topic", partition: 0, offset: 0, value: "world1" },
-      { topic: "sandbox-topic", partition: 0, offset: 1, value: "world2" },
-      { topic: "test-topic-1", partition: 0, offset: 0, value: "world1" },
-      { topic: "test-topic-1", partition: 0, offset: 1, value: "world2" },
-      { topic: "test-topic-1", partition: 0, offset: 2, value: "world3" },
-      { topic: "test-topic-2", partition: 0, offset: 0, value: "world1" },
-    ] });
+    // Get topics
+    axios.get('http://localhost:3001/api/v2/topics')
+      .then((res) => {
+        let { topics } = res.data;
+        console.log(topics);
+        this.setState({ topics: topics });
+      })
   }
 
   addMessage = (message) => {
@@ -56,28 +55,6 @@ class App extends Component {
     let joined = this.state.messages.concat(message);
     this.setState({ messages: joined });
   }
-  /*
-
-  // Setup socket
-        let socket = io('http://localhost:3001');
-        let app = feathers();
-
-        app.configure(feathers.socketio(socket));
-
-        app.service('messages').find()
-            .then((messages) => {
-                messages.forEach(this.addMessage);
-            });
-
-        app.service('messages').on('created', this.addMessage);
-    }
-
-    addMessage = (message) => {
-        // Add message to state
-        let joined = this.state.messages.concat(message);
-        this.setState({ messages: joined });
-    }
-  */
 
   onSelectedTopicChange(topic) {
     this.setState({ selectedTopic: topic });
@@ -99,7 +76,9 @@ class App extends Component {
           onTopicChange={this.onSelectedTopicChange}
           />
 
-        <TopicContainer topicName={this.state.selectedTopic} messages={this.state.messages} />
+        <TopicContainer topicName={this.state.selectedTopic}
+          messages={_.filter(this.state.messages, (m) => { return m.topic === this.state.selectedTopic })}
+          />
       </div>
     );
   }

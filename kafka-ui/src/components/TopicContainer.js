@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
@@ -17,38 +19,67 @@ class TopicContainer extends Component {
         return (
             <main className={this.props.classes.content} style={{height: "100vh"}}>
                 <div className={this.props.classes.toolbar}></div>
-                <Container>
-                    <Typography variant="h6">{this.props.topicName}</Typography>
-                    <Typography variant="h6">{this.props.messages.length}</Typography>
-                    <List>
-                        {this.props.messages.map((m, index) => (
-                            this.props.topicName === m.topic ?
-                                <ListItem key={index}>
-                                    <ListItemText key={index}>{m.value}</ListItemText>
-                                </ListItem>
-                                : null
-                        ))}
-                    </List>
-                </Container>
                 {this.props.topicName === '' ? null :
-                <Container style={{position: "absolute",bottom: 0}}>
-                    <TextField
-                            id="outlined-name"
-                            label="send message..."
-                            margin="normal"
-                            variant="outlined"
-                            style={{margin: 8, width: "60vw"}}
+                    <React.Fragment>
+                        <Container>
+                        <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Typography color="textSecondary">Topic</Typography>
+                                            <Typography variant="h6">{this.props.topicName}</Typography>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Typography color="textSecondary">Number of messages</Typography>
+                                            <Typography variant="h6">{this.props.messages.length}</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                            </Table>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{width: "10vw"}}>
+                                            <Typography color="textSecondary">Offset</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography color="textSecondary">Value</Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.props.messages.map((m, index) => (
+                                        <TableRow hover key={index}>
+                                            <TableCell>
+                                                {m.offset}
+                                            </TableCell>
+                                            <TableCell>
+                                                {m.value}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Container>
+                        <Container style={{position: "absolute",bottom: 0}}>
+                            <TextField
+                                    id="outlined-name"
+                                    label="send message..."
+                                    margin="normal"
+                                    variant="outlined"
+                                    style={{margin: 8, width: "60vw"}}
 
-                            />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            endIcon={<Icon>send</Icon>}
-                            style={{height: "56px", marginTop: "8px"}}
-                            >
-                            Send
-                        </Button>
-                </Container>
+                                    />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<Icon>send</Icon>}
+                                    style={{height: "56px", marginTop: "8px"}}
+                                    >
+                                    Send
+                                </Button>
+                        </Container>
+                    </React.Fragment>
                 }
             </main>
         )

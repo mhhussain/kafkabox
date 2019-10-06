@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CachedIcon from '@material-ui/icons/Cached';
+import Forward from '@material-ui/icons/Forward';
 
 import styles from './styles';
 
@@ -32,9 +32,12 @@ class TopicListContainer extends Component {
                 <Divider />
                 <List>
                 {this.props.topics.map((t, index) => (
-                    <ListItem button key={t.topic} onClick={() => { this.props.onTopicChange(t.topic) }}>
-                        <ListItemIcon>{t.topic === this.props.selectedTopic ? <CachedIcon /> : <div />}</ListItemIcon>
-                        <ListItemText primary={t.topic} />
+                    <ListItem button
+                        selected={t.name === this.props.selectedTopic}
+                        key={t.name}
+                        onClick={() => { this.props.onTopicChange(t.name) }}
+                        >
+                        <ListItemText primary={t.name} />
                     </ListItem>
                 ))}
                 </List>
