@@ -42,11 +42,7 @@ class App extends Component {
     app.service('messages').on('created', this.addMessage);
 
     // Get topics
-    axios.get('http://localhost:3001/api/v2/topics')
-      .then((res) => {
-        let { topics } = res.data;
-        this.setState({ topics: topics });
-      })
+    this.getTopics();
   }
 
   addMessage = (message) => {
@@ -57,6 +53,15 @@ class App extends Component {
 
   onSelectedTopicChange(topic) {
     this.setState({ selectedTopic: topic });
+  }
+
+  // API calls
+  getTopics = () => {
+    axios.get('http://localhost:3001/api/v2/topics')
+      .then((res) => {
+        let { topics } = res.data;
+        this.setState({ topics: topics });
+      });
   }
 
   sendMessage = (topic, message) => {
