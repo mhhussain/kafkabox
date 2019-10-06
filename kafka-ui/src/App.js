@@ -63,6 +63,10 @@ class App extends Component {
     axios.post(`http://localhost:3001/api/v2/${topic}/send`, { message });
   }
 
+  createTopic = (topic) => {
+    axios.post(`http://localhost:3001/api/v2/${topic}/create`);
+  }
+
   render() {
     return (
       <div className={this.props.classes.root}>
@@ -77,6 +81,7 @@ class App extends Component {
         <TopicListContainer selectedTopic={this.state.selectedTopic}
           topics={this.state.topics}
           onTopicChange={this.onSelectedTopicChange}
+          onTopicCreate={this.createTopic}
           />
 
         <TopicContainer topicName={this.state.selectedTopic}
