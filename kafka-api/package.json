@@ -1,6 +1,6 @@
 {
   "name": "kafka-api",
-  "version": "3.0.0",
+  "version": "3.1.1",
   "description": "API for Kafka sandbox",
   "main": "index.js",
   "scripts": {
