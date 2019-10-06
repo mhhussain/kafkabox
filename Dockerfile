@@ -2,7 +2,8 @@ FROM centos:latest
 
 # Create high-level app directory
 RUN mkdir /root/kafkabox &&\
-    mkdir /root/kafkabox/kafka-api
+    mkdir /root/kafkabox/kafka-api &&\
+    mkdir /root/kafkabox/kafka-ui
 
 # Copy in Kafka
 COPY kafka_2.12-2.3.0.tgz /root/kafkabox/
@@ -11,6 +12,9 @@ COPY start-kafka-server.sh /root/kafkabox/
 
 # Copy in node backend
 COPY kafka-api /root/kafkabox/kafka-api
+
+# Copy in React frontend
+COPY kafka-ui/build /root/kafkabox/kafka-ui
 
 # Extract Kafka
 RUN tar -xzf /root/kafkabox/kafka_2.12-2.3.0.tgz -C /root/kafkabox/
@@ -24,5 +28,7 @@ RUN yum install -y gcc-c++ make &&\
     yum install -y nodejs
 
 RUN npm --prefix /root/kafkabox/kafka-api install /root/kafkabox/kafka-api
+
+RUN npm i -g serve
 
 ENTRYPOINT ["sh", "/root/kafkabox/start-kafka-server.sh"]
