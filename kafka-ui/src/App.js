@@ -45,7 +45,6 @@ class App extends Component {
     axios.get('http://localhost:3001/api/v2/topics')
       .then((res) => {
         let { topics } = res.data;
-        console.log(topics);
         this.setState({ topics: topics });
       })
   }
@@ -58,6 +57,10 @@ class App extends Component {
 
   onSelectedTopicChange(topic) {
     this.setState({ selectedTopic: topic });
+  }
+
+  sendMessage = (topic, message) => {
+    axios.post(`http://localhost:3001/api/v2/${topic}/send`, { message });
   }
 
   render() {
@@ -78,6 +81,7 @@ class App extends Component {
 
         <TopicContainer topicName={this.state.selectedTopic}
           messages={_.filter(this.state.messages, (m) => { return m.topic === this.state.selectedTopic })}
+          onSendMessage={this.sendMessage}
           />
       </div>
     );

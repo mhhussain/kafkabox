@@ -14,6 +14,18 @@ import Container from '@material-ui/core/Container';
 import styles from './styles'
 
 class TopicContainer extends Component {
+    state = {
+        typedMessage: ''
+    };
+
+    onSendMessageTextChange = (e) => {
+        this.setState({ typedMessage: e.target.value });
+    }
+
+    onSendMessage = (topic, message) => {
+        this.props.onSendMessage(topic, message);
+        this.setState({ typedMessage: '' });
+    }
 
     render() {
         return (
@@ -63,21 +75,23 @@ class TopicContainer extends Component {
                         </Container>
                         <Container style={{position: "absolute",bottom: 0}}>
                             <TextField
-                                    id="outlined-name"
-                                    label="send message..."
-                                    margin="normal"
-                                    variant="outlined"
-                                    style={{margin: 8, width: "60vw"}}
-
-                                    />
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    endIcon={<Icon>send</Icon>}
-                                    style={{height: "56px", marginTop: "8px"}}
-                                    >
-                                    Send
-                                </Button>
+                                id="outlined-name"
+                                label="send message..."
+                                margin="normal"
+                                variant="outlined"
+                                style={{margin: 8, width: "60vw"}}
+                                onChange={this.onSendMessageTextChange}
+                                value={this.state.typedMessage}
+                                />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                endIcon={<Icon>send</Icon>}
+                                style={{height: "56px", marginTop: "8px"}}
+                                onClick={() => { this.onSendMessage(this.props.topicName, this.state.typedMessage) }}
+                                >
+                                Send
+                            </Button>
                         </Container>
                     </React.Fragment>
                 }
