@@ -13,6 +13,9 @@ Added a backend API (currently in node) at port 3001. Export port 3001 when crea
 _Update 3.0.0_
 Moved the entire API from using `kafka-node` to `kafkajs`. New routes are at `/api/v2`. Websockets are now also available, see `index.html` for an example.
 
+_Update 4.0.0_
+New Kafkabox UI has been added. UI runs at port 5000 and uses the API at port 3001 for information. See below for details.
+
 ## Running the sandbox
 
 The main image can be found here: https://hub.docker.com/r/moohh/kafkabox
@@ -20,10 +23,13 @@ The main image can be found here: https://hub.docker.com/r/moohh/kafkabox
 To run the sandbox pull and run the image:
 
 ```
-docker run -t --name kafkabox -p 9092:9092 -p 3001:3001 moohh/kafkabox
+docker run -t --name kafkabox -p 9092:9092 -p 3001:3001 -p 5000:5000 moohh/kafkabox
 ```
 
-Once the sandbox is running, you should be able to implement a Kafka publisher and consumer with a broker address of localhost:9092. Backend API is also available at port 3001.
+Once the sandbox is running you should be able to do the following:
+* Implement a Kafka publisher and/or consumer with a broker address of localhost:9092
+* Request a backend node API available at port 3001 (see Kafka API below for details)
+* View a frontend React UI available at port 5000 (see Kafka UI below for details)
 
 ## Version
 
@@ -35,6 +41,25 @@ Once the sandbox is running, you should be able to implement a Kafka publisher a
 - 2.3.0 - Added consumer - get all messages and get message by offset
 - 3.0.0 - Migrated API to kafkajs and also added real-time streaming over socket via feathersjs
 - 3.1.0 - Added a way to create a consumer on any topic
+- 3.1.1 - Added CORS support to API
+- 4.0.0 - Kafka UI is now available at port 5000
+
+## Kafka UI
+
+A UI is available for use at port 5000. Basic functionality is available, with more support planned.
+
+Follows is the UI support board:
+
+|Tag|Functionality|Status|
+|---|---|---|
+|4.0.0|View topics|Available|
+|4.0.0|View messages|Available|
+|4.0.0|Live relay of messages|Available|
+|4.0.0|Create topic|Available|
+|4.0.0|Send message to topic|Available|
+||Subscribe to a topic|tbd|
+||View consumers|tbd|
+||View min/max offset for topic|tbd|
 
 ## Kafka API
 
@@ -79,21 +104,24 @@ This is the current process in my mind.
 
 When the docker image is created:
 1. Pull the latest centos image
-2. Create directories for source
+2. Create directories for source (kafka-api, kafka-ui)
 3. Copy the Kafka binaries (downloaded from Apache Kafka) into the image
 4. Copy kafka-api code
-5. Unzip the Kafka binaries in the container
-6. Install java (I could probably use a java container...)
-7. Install node
-8. Run npm install to pull node modules
-9. Copy server start file
+5. Copy kafka-ui code
+6. Unzip the Kafka binaries in the container
+7. Install java (I could probably use a java container...)
+8. Install node
+9. Run `npm install` to pull node modules
+10. Run `npm i -g serve` to install serve globally. serve is used to run the ui
+11. Copy server start file
 
 When the image is run:
 `docker run -t --name container -p 9092:9092 -p 3001:3001 moohh/kafkabox`
 1. Run a basic zookeeper instance on port 2181  as a process in the image
 2. Run a basic broker instance on port 9092 as a process in the image
 3. Create a new topic called 'sandbox-topic'
-4. Start the kafka-api (npm start) on port 3001
+4. Start the kafka-api (`npm start`) on port 3001
+5. Start the kafka-ui (`serve -s /root/kafkabox/kafka-ui`) on port 5000
 
 Port 9092 of the container is forwarded to localhost making the Kafka broker available via host port 9092. Port 3001 of the container is forwarded to localhost for access to the API.
 
