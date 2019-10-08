@@ -43,6 +43,7 @@ Once the sandbox is running you should be able to do the following:
 - 3.1.0 - Added a way to create a consumer on any topic
 - 3.1.1 - Added CORS support to API
 - 4.0.0 - Kafka UI is now available at port 5000
+- 4.1.0 - Kafka UI can create topic subscriptions on the API
 
 ## Kafka UI
 
@@ -57,7 +58,7 @@ Follows is the UI support board:
 |4.0.0|Live relay of messages|Available|
 |4.0.0|Create topic|Available|
 |4.0.0|Send message to topic|Available|
-||Subscribe to a topic|tbd|
+|4.1.0|Subscribe to a topic|Available|
 ||View consumers|tbd|
 ||View min/max offset for topic|tbd|
 
