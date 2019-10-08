@@ -53,6 +53,7 @@ class App extends Component {
 
   onSelectedTopicChange(topic) {
     this.setState({ selectedTopic: topic });
+    this.subscribeToTopic(this.state.selectedTopic);
   }
 
   // API calls
@@ -69,7 +70,18 @@ class App extends Component {
   }
 
   createTopic = (topic) => {
-    axios.post(`http://localhost:3001/api/v2/${topic}/create`);
+    axios.post(`http://localhost:3001/api/v2/${topic}/create`)
+      .then((res) => {
+        this.subscribeToTopic(topic);
+        this.getTopics();
+      });
+  }
+
+  subscribeToTopic = (topic) => {
+    if (topic === '') {
+      return;
+    }
+    axios.post(`http://localhost:3001/api/v2/${topic}/feathers`);
   }
 
   render() {

@@ -37,7 +37,7 @@ class TopicListContainer extends Component {
     }
 
     closeCreateDialog = () => {
-        this.setState({ dialogOpen: false });
+        this.setState({ dialogOpen: false, dialogTopicInput: '' });
     }
 
     render() {
