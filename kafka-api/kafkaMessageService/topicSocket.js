@@ -8,6 +8,10 @@ let groups = [];
 let setupTopicConsumer = async (app, topic) => {
     let groupId = `${topic}-socket-group`;
 
+    if (_.includes(groups, groupId)) {
+        return;
+    }
+
     let kClient = new kafkajs.Kafka(configs.kafkaConfig);
     let consumer = kClient.consumer({ groupId });
 
@@ -31,9 +35,8 @@ let setupTopicConsumer = async (app, topic) => {
 
     await consumer.seek({ topic: topic, partition: 0, offset: 0 });
 
-    if (_.includes(groups, groupId)) {
-        groups.push(groupId);
-    }
+    // Keep track of groups so we dont reconsume...
+    groups.push(groupId);
 };
 
 module.exports = {

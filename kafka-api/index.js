@@ -30,6 +30,9 @@ app.publish(data => app.channel('everybody'));
 // Setup all routes
 setupRoutes(app);
 
+// Setup sandbox subscription
+setupTopicConsumer(app, 'sandbox-topic');
+
 app.listen(configs.port, () => {
     console.log(`listening on port ${configs.port}`);
 });
