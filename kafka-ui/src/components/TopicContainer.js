@@ -33,8 +33,8 @@ class TopicContainer extends Component {
                 <div className={this.props.classes.toolbar}></div>
                 {this.props.topicName === '' ? null :
                     <React.Fragment>
-                        <Container>
-                        <Table>
+                        <Container style={{maxHeight: "75vh", overflow: "auto"}}>
+                            <Table>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>
@@ -60,7 +60,7 @@ class TopicContainer extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.props.messages.map((m, index) => (
+                                    {this.props.messages.reverse().map((m, index) => (
                                         <TableRow hover key={index}>
                                             <TableCell>
                                                 {m.offset}

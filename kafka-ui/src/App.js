@@ -27,7 +27,7 @@ class App extends Component {
     this.onSelectedTopicChange = this.onSelectedTopicChange.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     // Configure feathers
     let socket = io('http://localhost:3001');
     let app = feathers();
@@ -51,7 +51,7 @@ class App extends Component {
     this.setState({ messages: joined });
   }
 
-  onSelectedTopicChange(topic) {
+  onSelectedTopicChange = (topic) => {
     this.setState({ selectedTopic: topic });
     this.subscribeToTopic(this.state.selectedTopic);
   }
