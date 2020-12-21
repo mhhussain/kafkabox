@@ -8,7 +8,7 @@ RUN mkdir /root/kafkabox &&\
 COPY kafka_2.12-2.3.0.tgz /root/kafkabox/
 
 # Copy in API and frontend site
-COPY api /root/kafkabox/app
+COPY kafkabox/api /root/kafkabox/app
 
 # Extract Kafka
 RUN tar -xzf /root/kafkabox/kafka_2.12-2.3.0.tgz -C /root/kafkabox/
