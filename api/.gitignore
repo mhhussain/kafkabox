@@ -109,3 +109,7 @@ $RECYCLE.BIN/
 # Others
 lib/
 data/
+
+
+# public folder (this folder is built from a different repo)
+public/

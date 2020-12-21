@@ -11,13 +11,8 @@ sleep 3s
 sleep 3s
 
 
-cd /root/kafkabox/kafka-api
+cd /root/kafkabox/app
 npm start &
-
-sleep 3s
-
-cd /root/kafkabox/kafka-ui
-serve -s .
 
 sleep 3s
 

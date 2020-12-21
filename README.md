@@ -16,6 +16,17 @@ Moved the entire API from using `kafka-node` to `kafkajs`. New routes are at `/a
 _Update 4.0.0_
 New Kafkabox UI has been added. UI runs at port 5000 and uses the API at port 3001 for information. See below for details.
 
+_Update 5.0.0-alpha_
+Breathing new life into this project. Redoing the entire UI and API using Vue, Vuetify, and Feathers. Stay tuned...
+
+## Running the sandbox (5.0.0)
+
+New docker command:
+
+```
+docker run -t --name kafkabox -p 9092:9092 -p 3030:3030 moohh/kafkabox:5.0.0-alpha
+```
+
 ## Running the sandbox
 
 The main image can be found here: https://hub.docker.com/r/moohh/kafkabox
