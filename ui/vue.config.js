@@ -1,5 +1,5 @@
 module.exports = {
-  outputDir: '/Users/seraphim/code/kafkabox/api/public',
+  outputDir: '/Users/seraphim/code/kafkabox/.build/sandbox/kafkabox/api/public',
   devServer: {
     proxy: {
       '/': {
