@@ -51,6 +51,11 @@ app.hooks(appHooks);
 
 // TODO: Add a new object to 'clusters' for
 //  localhost:9092 (if it doesn't already exist)
-//  app.service('clusters').create({})
+app.service('clusters').remove();
+app.service('clusters').create({
+  name: 'local',
+  clientId: 'kafkabox',
+  brokers: ['localhost:9092'],
+});
 
 module.exports = app;
